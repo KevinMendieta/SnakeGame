@@ -25,14 +25,18 @@ public class Snake {
         tiles.add(new Tile(0,0,xMax,yMax));
     }
     
-    public void move(int dx, int dy){
+    public void move(){
         for(int i = 0; i < tiles.size(); i++){
-            tiles.get(i).move(dx, dy);
+            tiles.get(i).move();
         }        
     }
     
     public ArrayList<Tile> getTiles(){
         return tiles;
+    }
+    
+    public long getScore(){
+        return score;
     }
     
 }

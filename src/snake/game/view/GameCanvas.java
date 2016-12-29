@@ -1,13 +1,16 @@
 package snake.game.view;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
-import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import snake.game.controll.Controller;
+import snake.game.controll.Tile;
 
 /**
  * @author KevinMendieta
@@ -27,27 +30,46 @@ public class GameCanvas extends Canvas implements Runnable{
     private Controller controller;
     
     public void init(){
-        controller = new Controller(WIDTH, HEIGHT);
+        requestFocus();
+        // Add keyboard listener
+	addKeyListener(new InputHandler(this));
+        controller = new Controller(WIDTH*SCALE, HEIGHT*SCALE);        
     }
     
-    public void move(int dx, int dy){
-        controller.move(dx, dy);
+    public void setDirection(int dx, int dy){
+        controller.setDirection(dx, dy);
     }
     
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if(key==KeyEvent.VK_RIGHT){
-            move(0,1);
+        if(key==KeyEvent.VK_RIGHT){            
+            setDirection(5,0);
         }
         if(key==KeyEvent.VK_LEFT){
-            move(0,-1);
+            setDirection(-5,0);
         }
         if(key==KeyEvent.VK_UP){
-            move(-1,0);
+            setDirection(0,-5);            
         }
         if(key==KeyEvent.VK_DOWN){
-            move(1,0);
+            setDirection(0,5);
         }
+    }
+    
+    public void keyReleased(KeyEvent e) {
+        /*int key = e.getKeyCode();
+        if(key==KeyEvent.VK_RIGHT){
+            setDirection(0,0);
+        }
+        if(key==KeyEvent.VK_LEFT){
+            setDirection(0,0);
+        }
+        if(key==KeyEvent.VK_UP){
+            setDirection(0,0);
+        }
+        if(key==KeyEvent.VK_DOWN){
+            setDirection(0,0);
+        }*/
     }
     
     private synchronized void start(){
@@ -111,7 +133,7 @@ public class GameCanvas extends Canvas implements Runnable{
      * Run the ticks of all game components.
      */
     public void tick(){
-        
+        controller.move();
     }
 	
     /*
@@ -125,8 +147,20 @@ public class GameCanvas extends Canvas implements Runnable{
         }
         Graphics g = bs.getDrawGraphics();
         //Rendering the game
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
-        
+        ArrayList<Tile> tiles = controller.getTiles();
+        Tile currentTile = null;
+        for (int i = 0 ; i < tiles.size() ; i++){
+            currentTile = tiles.get(i);
+            g.setColor(Color.WHITE);
+            g.fillRect(currentTile.getxPosition(), currentTile.getyPosition(), WIDTH*SCALE/32, HEIGHT*SCALE/32);
+        }
+        try{
+            Thread.sleep(16);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         //End rendering the game
         g.dispose();
         bs.show();

@@ -19,8 +19,16 @@ public class Controller {
         consumables = new ArrayList<Consumables>();
     }
     
-    public void move(int dx, int dy){
-        snake.move(dx, dy);
+    public void setDirection(int dx, int dy){
+        ArrayList<Tile> tiles  = snake.getTiles();
+        for(int i = 0 ; i < tiles.size() ; i++){
+            tiles.get(i).setDx(dx);
+            tiles.get(i).setDy(dy);
+        }
+    }
+    
+    public void move(){
+        snake.move();
     }
     
     public ArrayList<Tile> getTiles(){
@@ -29,5 +37,9 @@ public class Controller {
     
     public Snake getSnake(){
         return snake;
+    }
+    
+    public long getScore(){
+        return snake.getScore();
     }
 }
