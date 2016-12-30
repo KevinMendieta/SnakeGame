@@ -10,7 +10,7 @@ public class Food extends Consumables{
     }
 
     @Override
-    public void consumablePicked(Snake sanke) {
-        
+    public void consumablePicked(Snake snake) {
+        snake.foodPicked(this.score);
     }
 }

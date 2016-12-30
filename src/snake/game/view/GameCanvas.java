@@ -3,6 +3,7 @@ package snake.game.view;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,7 +20,7 @@ public class GameCanvas extends Canvas implements Runnable{
     
     private static final long serialVersionUID = 1L;
     public static final int WIDTH = 320;
-    public static final int HEIGHT = WIDTH / 12 * 9;
+    public static final int HEIGHT = 320;
     public static final int SCALE = 2;
     public final String TITLE = "Snake Game";
     
@@ -42,17 +43,18 @@ public class GameCanvas extends Canvas implements Runnable{
     
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+        int velocity = WIDTH*SCALE / 32;
         if(key==KeyEvent.VK_RIGHT){            
-            setDirection(5,0);
+            setDirection(velocity,0);
         }
         if(key==KeyEvent.VK_LEFT){
-            setDirection(-5,0);
+            setDirection(-velocity,0);
         }
         if(key==KeyEvent.VK_UP){
-            setDirection(0,-5);            
+            setDirection(0,-velocity);            
         }
         if(key==KeyEvent.VK_DOWN){
-            setDirection(0,5);
+            setDirection(0,velocity);
         }
     }
     
@@ -150,19 +152,25 @@ public class GameCanvas extends Canvas implements Runnable{
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
         ArrayList<Tile> tiles = controller.getTiles();
+        g.setFont(new Font("Century Gothic",Font.PLAIN,30));
+        g.setColor(Color.WHITE);
+        g.drawString("Score: "+controller.getScore(), 25, 30);
         Tile currentTile = null;
+        g.setColor(Color.WHITE);     
         for (int i = 0 ; i < tiles.size() ; i++){
             currentTile = tiles.get(i);
-            g.setColor(Color.WHITE);
             g.fillRect(currentTile.getxPosition(), currentTile.getyPosition(), WIDTH*SCALE/32, HEIGHT*SCALE/32);
         }
+        g.setColor(Color.RED);
+        g.fillRect(controller.getConsumable().getxPosition(), controller.getConsumable().getyPosition(), WIDTH*SCALE/32, HEIGHT*SCALE/32);
+        //Pausing the thread in order that the snake moves slower
         try{
-            Thread.sleep(16);
+            Thread.sleep(60);
         }catch(Exception e){
             e.printStackTrace();
         }
         //End rendering the game
-        g.dispose();
+        //g.dispose();
         bs.show();
     }
 	
