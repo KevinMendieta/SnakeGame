@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -22,6 +21,8 @@ public class GameCanvas extends Canvas implements Runnable{
     public static final int WIDTH = 320;
     public static final int HEIGHT = 320;
     public static final int SCALE = 2;
+    public String boardFps;
+    public static final int BOARDSCALE = WIDTH*SCALE/40;
     public final String TITLE = "Snake Game";
     
     private boolean running = false;
@@ -34,7 +35,7 @@ public class GameCanvas extends Canvas implements Runnable{
         requestFocus();
         // Add keyboard listener
 	addKeyListener(new InputHandler(this));
-        controller = new Controller(WIDTH*SCALE, HEIGHT*SCALE);        
+        controller = new Controller(WIDTH*SCALE, HEIGHT*SCALE, BOARDSCALE);        
     }
     
     public void setDirection(int dx, int dy){
@@ -43,7 +44,7 @@ public class GameCanvas extends Canvas implements Runnable{
     
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        int velocity = WIDTH*SCALE / 32;
+        int velocity = BOARDSCALE;
         if(key==KeyEvent.VK_RIGHT){            
             setDirection(velocity,0);
         }
@@ -123,6 +124,7 @@ public class GameCanvas extends Canvas implements Runnable{
 
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
+                boardFps = frames+"";
                 System.out.println(updates + "ticks, fps " + frames);
                 updates = 0;
                 frames = 0;
@@ -135,7 +137,7 @@ public class GameCanvas extends Canvas implements Runnable{
      * Run the ticks of all game components.
      */
     public void tick(){
-        controller.move();
+        controller.tick();
     }
 	
     /*
@@ -155,17 +157,18 @@ public class GameCanvas extends Canvas implements Runnable{
         g.setFont(new Font("Century Gothic",Font.PLAIN,30));
         g.setColor(Color.WHITE);
         g.drawString("Score: "+controller.getScore(), 25, 30);
-        Tile currentTile = null;
+        g.drawString("FPS = "+boardFps, 500, 30);
+        Tile currentTile;
         g.setColor(Color.WHITE);     
         for (int i = 0 ; i < tiles.size() ; i++){
             currentTile = tiles.get(i);
-            g.fillRect(currentTile.getxPosition(), currentTile.getyPosition(), WIDTH*SCALE/32, HEIGHT*SCALE/32);
+            g.fillRect(currentTile.getxPosition(), currentTile.getyPosition(), BOARDSCALE, BOARDSCALE);
         }
         g.setColor(Color.RED);
-        g.fillRect(controller.getConsumable().getxPosition(), controller.getConsumable().getyPosition(), WIDTH*SCALE/32, HEIGHT*SCALE/32);
+        g.fillRect(controller.getConsumable().getxPosition(), controller.getConsumable().getyPosition(), BOARDSCALE, BOARDSCALE);
         //Pausing the thread in order that the snake moves slower
         try{
-            Thread.sleep(60);
+            Thread.sleep(30);
         }catch(Exception e){
             e.printStackTrace();
         }

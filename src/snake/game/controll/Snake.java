@@ -55,6 +55,16 @@ public class Snake {
         }
     }
     
+    public void reset(){
+        this.numTiles = 1;
+        this.xPosition = 0;
+        this.yPosition = 0;
+        this.score = 0;
+        this.dx = 0;
+        this.dy  = 0;
+        initTiles();
+    }
+    
     public ArrayList<Tile> getTiles(){
         return tiles;
     }
@@ -72,11 +82,11 @@ public class Snake {
     }
 
     public void setDx(int dx) {
-        this.dx = dx;
+        if(this.dx+dx!=0)this.dx = dx;
     }
 
     public void setDy(int dy) {
-        this.dy = dy;
+        if(this.dy+dy!=0)this.dy = dy;
     }
     
     public void foodPicked(long score){
