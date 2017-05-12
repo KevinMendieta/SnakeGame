@@ -103,7 +103,7 @@ public class GameCanvas extends Canvas implements Runnable{
         init();
 
         long lastTime = System.nanoTime();
-        final double numOfTicks = 60.0;
+        final double numOfTicks = 20.0;
         double ns = 1000000000 / numOfTicks;
         double delta = 0;
         int updates = 0;
@@ -166,14 +166,8 @@ public class GameCanvas extends Canvas implements Runnable{
         }
         g.setColor(Color.RED);
         g.fillRect(controller.getConsumable().getxPosition(), controller.getConsumable().getyPosition(), BOARDSCALE, BOARDSCALE);
-        //Pausing the thread in order that the snake moves slower
-        try{
-            Thread.sleep(30);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
         //End rendering the game
-        //g.dispose();
+        g.dispose();
         bs.show();
     }
 	
@@ -187,6 +181,8 @@ public class GameCanvas extends Canvas implements Runnable{
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         game.start();

@@ -41,13 +41,13 @@ public class Snake {
             tiles.add(new Tile(this.xPosition,this.yPosition));
         }     
         tiles.set(tiles.size()-1,new Tile(this.xPosition,this.yPosition));
-        if (xPosition+dx<0 && dx != 0){
-            xPosition = xMax;
-        }else if (xPosition+dx>xMax && dx != 0){
+        if (xPosition + dx < 0 && dx != 0){
+            xPosition = xMax + dx;
+        }else if (xPosition + dx > xMax - dx && dx != 0){
             xPosition = 0;
-        }else if (yPosition+dy<0 && dy != 0){
-            yPosition = yMax;
-        }else if (yPosition+dy>yMax && dy != 0){
+        }else if (yPosition + dy < 0 && dy != 0){
+            yPosition = yMax + dy;
+        }else if (yPosition + dy > yMax - dy && dy != 0){
             yPosition = 0;
         }else{
             xPosition += dx;
