@@ -34,7 +34,7 @@ public class GameCanvas extends Canvas implements Runnable{
     public void init(){
         requestFocus();
         // Add keyboard listener
-	addKeyListener(new InputHandler(this));
+        addKeyListener(new InputHandler(this));
         controller = new Controller(WIDTH*SCALE, HEIGHT*SCALE, BOARDSCALE);        
     }
     
@@ -181,7 +181,7 @@ public class GameCanvas extends Canvas implements Runnable{
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+        frame.setPreferredSize(new Dimension(WIDTH * SCALE + 6, HEIGHT * SCALE + 29));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
